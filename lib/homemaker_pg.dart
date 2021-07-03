@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'add_task.dart';
+import 'package:hack_the_gap/add_fam_member.dart';
 import 'models/task.dart';
 
 class HomeMaker extends StatefulWidget {
@@ -13,23 +13,48 @@ class _HomeMakerState extends State<HomeMaker> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Homeacation'),
+      ),
       body: Container(
-        padding: EdgeInsets.all(20),
-        margin: EdgeInsets.all(20),
+        padding: EdgeInsets.only(left: 20, right: 20, top: 40),
+        //margin: EdgeInsets.only(left: 20, right: 20, top: 20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              "My Task",
-              textAlign: TextAlign.center,
+            Align(
+              alignment: Alignment.topRight,
+              child: TextButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AddFamilyMember()));
+                },
+                child: Text('Next'),
+              ),
+            ),
+            Container(
+              child: Text(
+                "My Task",
+                style: TextStyle(fontSize: 30),
+              ),
             ),
             Expanded(
               child: ListView.builder(
                   itemCount: taskList.length,
                   itemBuilder: (context, index) {
                     return ListTile(
-                      title: Text(taskList[index].taskName),
+                      title: Container(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 15,
+                          ),
+                          decoration: BoxDecoration(
+                              border: Border.all(),
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Text(taskList[index].taskName)),
                     );
                   }),
             )
@@ -42,6 +67,7 @@ class _HomeMakerState extends State<HomeMaker> {
           showModalBottomSheet(
               context: context,
               builder: (context) {
+                newTaskName = null;
                 return Container(
                   height: 200,
                   color: Color(0xff757575),
@@ -53,8 +79,7 @@ class _HomeMakerState extends State<HomeMaker> {
                         Text(
                           'Add Task',
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Colors.purpleAccent, fontSize: 24),
+                          style: TextStyle(fontSize: 24),
                         ),
                         TextField(
                           autofocus: true,
@@ -64,7 +89,7 @@ class _HomeMakerState extends State<HomeMaker> {
                           },
                         ),
                         FlatButton(
-                          color: Colors.purple,
+                          color: Colors.deepPurple,
                           onPressed: () {
                             if (newTaskName != null)
                               setState(() {
