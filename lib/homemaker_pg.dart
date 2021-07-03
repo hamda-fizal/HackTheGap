@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hack_the_gap/add_fam_member.dart';
-import 'models/task.dart';
+import 'models/notify.dart';
+import 'package:provider/provider.dart';
 
 class HomeMaker extends StatefulWidget {
   @override
@@ -8,7 +9,7 @@ class HomeMaker extends StatefulWidget {
 }
 
 class _HomeMakerState extends State<HomeMaker> {
-  List<Task> taskList = [];
+  //List<Task> taskList = [];
   String newTaskName;
   @override
   Widget build(BuildContext context) {
@@ -43,7 +44,8 @@ class _HomeMakerState extends State<HomeMaker> {
             ),
             Expanded(
               child: ListView.builder(
-                  itemCount: taskList.length,
+                  itemCount:
+                      Provider.of<TaskListListener>(context).tasksList.length,
                   itemBuilder: (context, index) {
                     return ListTile(
                       title: Container(
@@ -54,7 +56,9 @@ class _HomeMakerState extends State<HomeMaker> {
                           decoration: BoxDecoration(
                               border: Border.all(),
                               borderRadius: BorderRadius.circular(10)),
-                          child: Text(taskList[index].taskName)),
+                          child: Text(Provider.of<TaskListListener>(context)
+                              .tasksList[index]
+                              .taskName)),
                     );
                   }),
             )
@@ -92,11 +96,11 @@ class _HomeMakerState extends State<HomeMaker> {
                           color: Colors.deepPurple,
                           onPressed: () {
                             if (newTaskName != null)
-                              setState(() {
-                                taskList.add(Task(taskName: newTaskName));
-                              });
+                              Provider.of<TaskListListener>(context,
+                                      listen: false)
+                                  .addTask(newTaskName);
 
-                            print(taskList[0].taskName);
+                            //print(taskList[0].taskName);
                             Navigator.pop(context);
                           },
                           child: Text(
