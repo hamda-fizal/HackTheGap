@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:hack_the_gap/models/family_members.dart';
+import 'package:provider/provider.dart';
+import 'models/notify.dart';
+import 'package:flutter/material.dart';
 
-
-class Assign_task extends StatefulWidget {
+class AssignTask extends StatefulWidget {
   @override
   AssignTaskState createState() => AssignTaskState();
 }
 
-class AssignTaskState extends State<Assign_task> {
-
+class AssignTaskState extends State<AssignTask> {
   List<String> selectedItemValue = new List<String>();
   var status = 'pending';
   List<String> tasks;
   @override
   Widget build(BuildContext context) {
-
-    tasks=['Wash dishes','Cook breakfast','Clean room','Fill Water'];
+    //tasks = ['Wash dishes', 'Cook breakfast', 'Clean room', 'Fill Water'];
 
     return Scaffold(
       appBar: AppBar(
@@ -34,7 +35,7 @@ class AssignTaskState extends State<Assign_task> {
       body: new ListView.builder(
         physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
         padding: const EdgeInsets.all(16),
-        itemCount: tasks.length,
+        itemCount: Provider.of<TaskListListener>(context).tasksList.length,
         itemBuilder: (context, i) {
           for (int i = 0; i < 20; i++) {
             selectedItemValue.add('None');
@@ -42,34 +43,29 @@ class AssignTaskState extends State<Assign_task> {
           return Card(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10),
-                  topRight: Radius.circular(10)),
+                  topLeft: Radius.circular(10), topRight: Radius.circular(10)),
               side: BorderSide(color: Colors.purple, width: 0.5),
             ),
             shadowColor: Colors.grey,
             elevation: 5,
-
-            child:Container(
-
-                decoration:
-                BoxDecoration(
+            child: Container(
+                decoration: BoxDecoration(
                   gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [Colors.deepPurple, Colors.white]),
                 ),
-                child:  Padding(
+                child: Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
-
                     children: <Widget>[
-
                       Align(
                         alignment: Alignment.centerLeft,
-
                         child: Container(
                           child: Text(
-                            tasks[i],
+                            Provider.of<TaskListListener>(context)
+                                .tasksList[i]
+                                .taskName,
                             style: TextStyle(
                               fontSize: 18.0,
                               color: Colors.tealAccent,
@@ -79,42 +75,30 @@ class AssignTaskState extends State<Assign_task> {
                         ),
                       ),
                       DropdownButton(
-
                         hint: Text(
                           'Choose family member',
-                          style: TextStyle(
-                              color: Colors.blueGrey
-                          ),
-
+                          style: TextStyle(color: Colors.blueGrey),
                         ),
                         itemHeight: 50.0,
-
                         items: _dropDownItem(),
                         onChanged: (value) {
-                          selectedItemValue[i]=value;
-                          setState(() {
-                          });
+                          selectedItemValue[i] = value;
+                          setState(() {});
                         },
                         value: selectedItemValue[i],
                       ),
                       Align(
                         alignment: Alignment.centerLeft,
-
                         child: Container(
                           child: Text(
-                            'status : '+status,
+                            'status : ' + status,
                             style: TextStyle(fontSize: 14.0),
                           ),
                         ),
                       ),
-
                     ],
                   ),
-
-                )
-
-            ),
-
+                )),
           );
         },
       ),
@@ -122,13 +106,24 @@ class AssignTaskState extends State<Assign_task> {
   }
 
   List<DropdownMenuItem<String>> _dropDownItem() {
-
-    List<String> fam = ['None','Natasha','Dane','Roger'];  // Dummy data
+    List<String> fam = ['None', 'Natasha', 'Dane', 'Roger']; // Dummy data
     return fam
         .map((value) => DropdownMenuItem(
-      value: value,
-      child: Text(value),
-    ))
+              value: value,
+              child: Text(value),
+            ))
         .toList();
   }
 }
+
+// List<DropdownMenuItem<String>> _dropDownItem() {
+//   List<String> fam =
+//       Provider.of<TaskListListener>(context).memberNames; // Dummy data
+//   print(Provider.of<TaskListListener>(context).memberNames.length);
+//   return fam
+//       .map((value) => DropdownMenuItem(
+//             value: value,
+//             child: Text(value),
+//           ))
+//       .toList();
+// }

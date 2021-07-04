@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hack_the_gap/assign_task.dart';
 import 'models/family_members.dart';
+import 'package:provider/provider.dart';
+import 'models/notify.dart';
 
 class AddFamilyMember extends StatefulWidget {
   @override
@@ -22,16 +25,16 @@ class _AddFamilyMemberState extends State<AddFamilyMember> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Align(
-            //   alignment: Alignment.topRight,
-            //   child: TextButton(
-            //     onPressed: () {
-            //       // Navigator.push(context,
-            //       //     MaterialPageRoute(builder: (context) => HomeMaker()));
-            //     },
-            //     child: Text('Next'),
-            //   ),
-            // ),
+            Align(
+              alignment: Alignment.topRight,
+              child: TextButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => AssignTask()));
+                },
+                child: Text('Next'),
+              ),
+            ),
             Container(
               child: Text(
                 "Family Members",
@@ -40,11 +43,12 @@ class _AddFamilyMemberState extends State<AddFamilyMember> {
             ),
             Expanded(
               child: ListView.builder(
-                  itemCount: memberList.length,
+                  itemCount:
+                      Provider.of<TaskListListener>(context).memberList.length,
                   itemBuilder: (context, index) {
                     return ListTile(
                       title: Text(
-                        '${index + 1}. ${memberList[index].name}',
+                        '${index + 1}. ${Provider.of<TaskListListener>(context).memberList[index].name}',
                         style: TextStyle(fontSize: 18),
                       ),
                     );
@@ -84,9 +88,9 @@ class _AddFamilyMemberState extends State<AddFamilyMember> {
                           color: Colors.deepPurple,
                           onPressed: () {
                             if (newMember != null)
-                              setState(() {
-                                memberList.add(FamilyMembers(name: newMember));
-                              });
+                              Provider.of<TaskListListener>(context,
+                                      listen: false)
+                                  .addMember(newMember);
                             Navigator.pop(context);
                           },
                           child: Text(
