@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hack_the_gap/models/family_members.dart';
 import 'package:provider/provider.dart';
 import 'models/notify.dart';
-import 'package:flutter/material.dart';
 
 class AssignTask extends StatefulWidget {
   @override
