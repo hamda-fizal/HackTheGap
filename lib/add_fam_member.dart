@@ -16,7 +16,18 @@ class _AddFamilyMemberState extends State<AddFamilyMember> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Homeacation'),
+        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor: Colors.deepPurpleAccent,
+        title: Row(
+          children: <Widget>[
+            Image.asset(
+              "assets/homacationlogo.png",
+              height: 40,
+              width: 40,
+            ),
+            Text(" Homacation"),
+          ],
+        ),
       ),
       body: Container(
         padding: EdgeInsets.only(left: 20, right: 20, top: 40),
